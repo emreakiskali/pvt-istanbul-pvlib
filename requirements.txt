@@ -1,0 +1,5 @@
+pvlib>=0.13,<0.14
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+openpyxl>=3.1
