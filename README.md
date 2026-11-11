@@ -7,7 +7,7 @@ data.
 
 Companion code for:
 
-> Akıskalıoğlu, E., Gülcü, M., Atmaca, M. (2026). *Annual Energy Analysis
+> Gülcü, M., Akıskalıoğlu, E., Atmaca, M. (2026). *Annual Energy Analysis
 > and Performance Simulation of Photovoltaic–Thermal (PV/T) Systems
 > Under Istanbul Climate Conditions Using Python and PVlib.* Submitted
 
