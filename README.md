@@ -69,50 +69,6 @@ This will:
 PVGIS API (`re.jrc.ec.europa.eu`). Run this somewhere with normal
 internet access — some sandboxed/CI environments block this domain.
 
-## Revision of November 2026 (response to reviewers)
-
-- **Annual efficiencies are now energy-based.** Each annual energy yield
-  is divided by the annual solar energy incident on the collector
-  aperture, H_in = Σ G_POA·A·Δt / 1000 (Section 3.3.5). The earlier
-  output added a daylight-hour mean electrical efficiency to an all-hour
-  mean thermal efficiency (40.50 %), which is not a meaningful quantity
-  and has been removed. The corrected values are 14.34 % (AC electrical),
-  52.41 % (thermal) and 66.76 % (combined). Monthly efficiencies use the
-  same definition.
-- **Closed-form thermal efficiency.** With T_in = T_a, the collector curve
-  gives η_th = η₀ / [1 + a₁A/(2ṁc_p)] = 52.41 % in every daylight hour;
-  `annual_summary` reports this value next to the simulated one.
-- **Table numbers follow the revised manuscript**: annual summary =
-  Table 3, sensitivity = Table 4, inlet scenarios = Table 5.
-- **PVGIS metadata** returned with the TMY are cached in
-  `data/istanbul_pvgis_tmy_meta.json` and printed at the start of a run.
-
-## Fixed since the first version of this package
-
-- **`get_pvgis_hourly` return-value unpacking.** Current pvlib (0.13+)
-  returns a 2-tuple `(data, meta)` from `get_pvgis_hourly`, not the
-  3-tuple `(data, inputs, meta)` shown in some older examples floating
-  around online. `validation.py` now unpacks it correctly — if you see
-  `ValueError: not enough values to unpack`, you're on an old copy of
-  this file.
-- **Azimuth convention**, confirmed by reading the installed pvlib's
-  source directly: `get_pvgis_hourly` builds PVGIS's `aspect` parameter
-  as `surface_azimuth - 180`, so passing `surface_azimuth=180` (south, in
-  pvlib's compass-bearing convention used everywhere else in this
-  codebase) correctly maps to PVGIS's `aspect=0` (its own south
-  convention). No manual conversion needed — this was flagged as a
-  caveat to verify in the first version of this package and has now been
-  confirmed correct against the pvlib 0.13.1 source.
-- **Multi-year hourly data, not a single year.** `get_pvgis_hourly`'s
-  `seriescalc` endpoint returns the *entire* multi-year hourly database
-  (~15–20 years, depending on site) unless you pass explicit `start`/
-  `end` years — it is not a TMY-style single representative year the way
-  `get_pvgis_tmy` is. `get_pvgis_monthly_ac` now sums to monthly energy
-  per (year, calendar-month) and averages across years, which is also
-  what PVGIS's own website "PVcalc" tool does internally to produce its
-  headline monthly/annual figures — so this is the correct reference,
-  not just a workaround for the crash it originally caused.
-
 ## Repository structure
 
 ```
